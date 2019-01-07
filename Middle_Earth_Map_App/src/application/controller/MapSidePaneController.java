@@ -19,8 +19,6 @@ import javafx.scene.layout.VBox;
 public class MapSidePaneController extends VBox {
 
 	@FXML private VBox vbox_root_pane; 
-	@FXML private Button button_header;
-
 	
 	public MapSidePaneController() {
 
@@ -39,12 +37,4 @@ public class MapSidePaneController extends VBox {
 			throw new RuntimeException(exception);
 		}
 	}
-
-	@FXML
-	private void initialize() {}
-	
-	public Button getButton_header() {
-		return button_header;
-	}
-
 }

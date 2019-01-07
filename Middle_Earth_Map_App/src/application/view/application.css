@@ -1,6 +1,6 @@
 /*!
  * javaMetro v0.1.0
- * Copyright 2018 Christoph Ackermann
+ * Copyright 2018 Christoph und Bela Ackermann
  */
 /**
  * VARIABLES
@@ -54,81 +54,48 @@
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 5, 0.0, 0, 1);
 }
 
-.icon-header{
+.icon-header {
 	-fx-background-image: url("../../../resources/images/TolkienIcon.jpg");
-	-fx-background-repeat: stretch;   
-    -fx-background-size: 40 40;
-    -fx-background-position: center center;
+	-fx-background-repeat: stretch;
+	-fx-background-size: 40 40;
+	-fx-background-position: center center;
 }
 
 .icon-person {
 	-fx-background-color: #ff8080;
 	-fx-border-color: #800000;
-	-fx-background-image: url("../../../resources/images/person.png");
-	-fx-background-repeat: stretch;   
-    -fx-background-size: 40 40;
-    -fx-background-position: center center;
-
-
+	-fx-background-image: url("../../../resources/images/person1.png");
+	-fx-background-repeat: stretch;
+	-fx-background-size: 35 35;
+	-fx-background-position: center center;
 }
 
 .icon-place {
 	-fx-background-color: #8eff8e;
 	-fx-border-color: #00aa00;
-		-fx-background-image: url("../../../resources/images/place.png");
-	-fx-background-repeat: stretch;   
-    -fx-background-size: 25 25;
-    -fx-background-position: center center;
+	-fx-background-image: url("../../../resources/images/place1.png");
+	-fx-background-repeat: stretch;
+	-fx-background-size: 30 30;
+	-fx-background-position: center center;
 }
 
 .icon-event {
 	-fx-background-color: #ffff35;
 	-fx-border-color: #c8c800;
-	-fx-background-image: url("../../../resources/images/event.png");
-	-fx-background-repeat: stretch;   
-    -fx-background-size: 30 30;
-    -fx-background-position: center center;
+	-fx-background-image: url("../../../resources/images/event1.png");
+	-fx-background-repeat: stretch;
+	-fx-background-size: 35 35;
+	-fx-background-position: center center;
 }
 
 .icon-assorted {
 	-fx-background-color: #418cfe;
 	-fx-border-color: #5966ff;
-		-fx-background-image: url("../../../resources/images/assorted.png");
-	-fx-background-repeat: stretch;   
-    -fx-background-size: 25 25;
-    -fx-background-position: center center;
+	-fx-background-image: url("../../../resources/images/assorted1.png");
+	-fx-background-repeat: stretch;
+	-fx-background-size: 35 35;
+	-fx-background-position: center center;
 }
-
-.cubic-icon {
-	-fx-fill: rgba(80.0, 80.0, 80.0, 0.0);
-	-fx-stroke: black;
-}
-
-.node-overlay {
-	-fx-background-radius: 10 10 0 0;
-	-fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.7)
-		15%, rgba(50, 100, 150, 0.45) 100%);
-}
-
-.right-link-handle:hover {
-	-fx-background-radius: 0 0 10 0;
-	-fx-background-color: rgba(255, 255, 255, 0.35);
-}
-
-.left-link-handle:hover {
-	-fx-background-radius: 0 0 0 10;
-	-fx-background-color: rgba(255, 255, 255, 0.35);
-}
-
-.icon-red {
-	-fx-background-color: red;
-	content: "\25AE";
-	font-family: FontAwesome;
-	left: -5px;
-	position: absolute;
-	top: 0;
-}
-
 /**
  * ALTERNATE LABELS
  * ----------------
@@ -167,7 +134,7 @@
 
 .label-primary {
 	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-	-fx-font-size: 12px;
+	-fx-font-size: 16px;
 	-fx-background-color: #fdf6e3;
 	-fx-text-fill: #2b91af;
 	-fx-padding: 0.3em 0.3em 0.3em 0.6em;
@@ -211,13 +178,19 @@
  */
 .button {
 	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-	-fx-font-size: 16px;
+	-fx-font-size: 12px;
 	-fx-background-radius: 0em;
 	-fx-background-color: #bcaf93, #d9d2c2;
 	-fx-background-insets: 0em, 0.125em;
 	-fx-padding: 0.3125em 1.375em 0.3125em 1.375em;
 	-fx-text-fill: #333333;
 	-fx-scale-shape: true;
+}
+
+.button-save {
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
 }
 
 .button-bar {
@@ -277,7 +250,7 @@
 
 .button-primary {
 	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-	-fx-font-size: 16px;
+	-fx-font-size: 12px;
 	-fx-background-radius: 0em;
 	-fx-background-color: #1c5e72, #2b91af;
 	-fx-background-insets: 0em, 0.125em;
@@ -387,10 +360,23 @@
  * TEXT-FIELD
  * ----------
  */
+.text-field-header {
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 20px;
+	-fx-font-weight : bold; 
+	-fx-text-fill : #3d478d;
+	-fx-background-color: #d3af86, #ffffff;
+	-fx-background-insets: 0em, 0.05em;
+	-fx-background-radius: 0em, 0em;
+	-fx-mark-color: #8c8364;
+	-fx-font-weight: bold;
+	-fx-text-fill: #3d478d;
+}
+
 .text-field {
 	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 	-fx-font-size: 12px;
-	-fx-background-color: #d3af86, #d9d2c2;
+	-fx-background-color: #d3af86, #ffffff;
 	-fx-background-insets: 0em, 0.05em;
 	-fx-background-radius: 0em, 0em;
 	-fx-text-fill: #586e75;
@@ -406,6 +392,20 @@
 }
 
 .text-field:disabled {
+	-fx-opacity: 1;
+	-fx-background-color: #e1c8ab, #e3ded2;
+	-fx-text-fill: #6e8992;
+}
+
+.text-field-header:hover {
+	-fx-background-color: #a0703a, #d9d2c2;
+}
+
+.text-field-header:focused {
+	-fx-background-color: #2b91af, #d9d2c2;
+}
+
+.text-field-header:disabled {
 	-fx-opacity: 1;
 	-fx-background-color: #e1c8ab, #e3ded2;
 	-fx-text-fill: #6e8992;
@@ -1076,7 +1076,7 @@
  */
 .tooltip {
 	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-	-fx-font-size: 10px;
+	-fx-font-size: 12px;
 	-fx-max-width: 22.222222em;
 	-fx-background-color: #a89873, #fef9ed;
 	-fx-background-insets: 0em, 0.01em;

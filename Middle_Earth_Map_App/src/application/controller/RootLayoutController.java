@@ -13,7 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
@@ -24,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class RootLayoutController extends AnchorPane{
 
@@ -93,11 +95,9 @@ public class RootLayoutController extends AnchorPane{
 			}
 		}
 
-
-		TableController tbl = new TableController();
 		ButtonBarController ctrl = new ButtonBarController();
 
-		controller_pane.getChildren().addAll(tbl, ctrl);
+		controller_pane.getChildren().add(ctrl);
 
 		buildDragHandlers();
 
@@ -109,7 +109,7 @@ public class RootLayoutController extends AnchorPane{
 
 		// sets the image on zoom
 		ImageMagnifier iM = new ImageMagnifier();
-		iM.setImageOnZoom(image_pane);	
+		iM.setImageOnZoom(image_pane);
 
 		// center the scroll contents.
 		image_scroll_pane.setHvalue(image_scroll_pane.getHmin() + (image_scroll_pane.getHmax() - image_scroll_pane.getHmin()) / 2);
@@ -213,6 +213,9 @@ public class RootLayoutController extends AnchorPane{
 				ClipboardContent content = new ClipboardContent();
 				DragContainer container = new DragContainer();
 
+				container.addData ("name", icn.getIconName());
+				container.addData ("status", icn.getIconDropStatus());
+				container.addData("data", icn.getSerializeableIconData());
 				container.addData ("type", mDragOverIcon.getType().toString());
 				content.put(DragContainer.AddNode, container);
 
@@ -274,8 +277,9 @@ public class RootLayoutController extends AnchorPane{
 				DragContainer container = 
 						(DragContainer) event.getDragboard().getContent(DragContainer.AddNode);
 
-				container.addData("scene_coords", 
+				container.addData ("scene_coords", 
 						new Point2D(event.getSceneX(), event.getSceneY()));
+
 
 				ClipboardContent content = new ClipboardContent();
 				content.put(DragContainer.AddNode, container);
@@ -304,6 +308,9 @@ public class RootLayoutController extends AnchorPane{
 
 						DragIconController droppedIcon = new DragIconController();
 
+						droppedIcon.setIconName(container.getValue("name"));
+						droppedIcon.setIconDropStatus(container.getValue("status"));
+						droppedIcon.setDeserializedIconData(container.getValue("data"));
 						droppedIcon.setType(DragIconType.valueOf(container.getValue("type")));
 
 						DragIconType mType = mDragOverIcon.getType();
@@ -316,7 +323,14 @@ public class RootLayoutController extends AnchorPane{
 						droppedIcon.relocateToPoint(
 								new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
 								);
+						
+						if( ! droppedIcon.getIconDropStatus() ) {
 
+						showMapItemEditDialog(droppedIcon);
+						droppedIcon.getIconName();
+						droppedIcon.changeIconDropStatus();
+						}
+						addEditDialogOpener(droppedIcon);
 						addDragDetection(droppedIcon);
 					}
 				}
@@ -325,4 +339,67 @@ public class RootLayoutController extends AnchorPane{
 			}
 		});
 	}
+
+	/**
+	 * Opens a dialog to edit details for the specified map items. If the user
+	 * clicks OK, the changes are saved into the provided suggestion object and true
+	 * is returned.
+	 * 
+	 * @param entscheidung the suggestion object to be edited
+	 * @return true if the user clicked OK, false otherwise.
+	 */
+	public boolean showMapItemEditDialog(DragIconController droppedDragIcon) {
+		try {
+			
+//			FXMLLoader fxmlLoader = new FXMLLoader(
+//					getClass().getResource("../view/DragIcon_view.fxml")
+//					);
+//			
+			// Load the fxml file and create a new stage for the popup dialog.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(RootLayoutController.class.getResource("../view/MapItemEditDialog_view.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Create the dialog Stage.
+			Stage dialogStage = new Stage();
+			// Set the application icon.
+			dialogStage.getIcons().add(new Image("file:resources/images/TolkienIcon.jpg"));
+			dialogStage.setTitle("Kartenmarkierung bearbeiten");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(null);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Set the suggestion into the controller.
+			MapItemEditDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setMapItem(droppedDragIcon);
+
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
+			return true;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Called when the user clicks the edit button. Opens a dialog to edit
+	 * details for the selected
+	 */
+
+	public void addEditDialogOpener(DragIconController dragIcon) {
+
+		dragIcon.setOnMouseClicked(new EventHandler <MouseEvent> () {
+			@Override
+			public void handle(MouseEvent event) {
+				
+				showMapItemEditDialog(dragIcon);
+				
+				}
+		});
+	}
 }
+

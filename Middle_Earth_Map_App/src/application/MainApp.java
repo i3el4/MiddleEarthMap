@@ -4,25 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
 import application.controller.RootLayoutController;
-import application.model.MapEntriesWrapper;
-import application.model.MapEntry;
+import application.model.MapItemData;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
 public class MainApp extends Application {
@@ -31,28 +22,10 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 
 	/**
-	 * The data as an observable list of suggestions.
-	 */
-	private ObservableList<MapEntry> mapData = FXCollections.observableArrayList();
-	private MapEntriesWrapper wrapper;
-
-	/**
 	 * Constructor
 	 */
 	public MainApp() {
 
-		// Add some sample data
-		mapData.add(new MapEntry("Olaf", "Rollenspielen"));
-		mapData.add(new MapEntry("Beutelsend", "Schlafen"));
-
-	}
-
-	/**
-	 * Returns the data as an observable list of suggestions. 
-	 * @return
-	 */
-	public ObservableList<MapEntry> getMapData() {
-		return mapData;
 	}
 
 	@Override
@@ -89,84 +62,84 @@ public class MainApp extends Application {
 
 		rootLayout.setCenter(new RootLayoutController());
 		
-	
-		// Try to load last opened suggestion file.
-		File file = getMapDataFilePath();
-		if (file != null) {
-			loadMapDataFromFile(file);
-		}
+//		TODO: Make the Application saveable
+//		// Try to load last opened suggestion file.
+//		File file = getMapDataFilePath();
+//		if (file != null) {
+//			loadMapDataFromFile(file);
+//		}
 	}
 
-	/**
-	 * Loads suggestion data from the specified file. The current suggestion data will
-	 * be replaced.
-	 * 
-	 * @param file
-	 */
-	public void loadMapDataFromFile(File file) {
-		try {
-			JAXBContext context = JAXBContext
-					.newInstance(MapEntriesWrapper.class);
-			Unmarshaller um = context.createUnmarshaller();
+//	/**
+//	 * Loads suggestion data from the specified file. The current suggestion data will
+//	 * be replaced.
+//	 * 
+//	 * @param file
+//	 */
+//	public void loadMapDataFromFile(File file) {
+//		try {
+//			JAXBContext context = JAXBContext
+//					.newInstance(MapEntriesWrapper.class);
+//			Unmarshaller um = context.createUnmarshaller();
+//
+//			// Reading XML from the file and unmarshalling.
+//			MapEntriesWrapper wrapper = (MapEntriesWrapper) um.unmarshal(file);
+//
+//
+//			mapData.clear();
+//			mapData.addAll(wrapper.getMapEntries());
+//
+//			// Save the file path to the registry.
+//			setMapDataFilePath(file);
+//
+//		} catch (Exception e) { // catches ANY exception
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setTitle("Error");
+//			alert.setHeaderText("Could not load data");
+//			alert.setContentText("Could not load data from file:\n" + file.getPath());
+//
+//			alert.showAndWait();
+//		}
+//	}
+//
+//	public void wrapMapData() {
+//		// Wrapping our suggestion data.
+//		wrapper = new MapEntriesWrapper();
+//		wrapper.setMapEntries(mapData);
+//	}
 
-			// Reading XML from the file and unmarshalling.
-			MapEntriesWrapper wrapper = (MapEntriesWrapper) um.unmarshal(file);
 
-
-			mapData.clear();
-			mapData.addAll(wrapper.getMapEntries());
-
-			// Save the file path to the registry.
-			setMapDataFilePath(file);
-
-		} catch (Exception e) { // catches ANY exception
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Could not load data");
-			alert.setContentText("Could not load data from file:\n" + file.getPath());
-
-			alert.showAndWait();
-		}
-	}
-
-	public void wrapMapData() {
-		// Wrapping our suggestion data.
-		wrapper = new MapEntriesWrapper();
-		wrapper.setMapEntries(mapData);
-	}
-
-
-	/**
-	 * Saves the current suggestion data to the specified file.
-	 * 
-	 * @param file
-	 */
-	public void saveMapDataToFile(File file) {
-		try {
-			JAXBContext context = JAXBContext
-					.newInstance(MapEntriesWrapper.class);
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-			// Wrapping our suggestion data.
-			MapEntriesWrapper wrapper = new MapEntriesWrapper();
-			wrapper.setMapEntries(mapData);
-
-			// Marshalling and saving XML to the file.
-			m.marshal(wrapper, file);
-
-			// Save the file path to the registry.
-			setMapDataFilePath(file);
-
-		} catch (Exception e) { // catches ANY exception
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Could not save data");
-			alert.setContentText("Could not save data to file:\n" + file.getPath());
-
-			alert.showAndWait();
-		}
-	}
+//	/**
+//	 * Saves the current suggestion data to the specified file.
+//	 * 
+//	 * @param file
+//	 */
+//	public void saveMapDataToFile(File file) {
+//		try {
+//			JAXBContext context = JAXBContext
+//					.newInstance(MapEntriesWrapper.class);
+//			Marshaller m = context.createMarshaller();
+//			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//			// Wrapping our suggestion data.
+//			MapEntriesWrapper wrapper = new MapEntriesWrapper();
+//			wrapper.setMapEntries(mapData);
+//
+//			// Marshalling and saving XML to the file.
+//			m.marshal(wrapper, file);
+//
+//			// Save the file path to the registry.
+//			setMapDataFilePath(file);
+//
+//		} catch (Exception e) { // catches ANY exception
+//			Alert alert = new Alert(AlertType.ERROR);
+//			alert.setTitle("Error");
+//			alert.setHeaderText("Could not save data");
+//			alert.setContentText("Could not save data to file:\n" + file.getPath());
+//
+//			alert.showAndWait();
+//		}
+//	}
 
 	/**
 	 * Opens a dialog to edit details for the specified suggestion. If the user
@@ -176,7 +149,7 @@ public class MainApp extends Application {
 	 * @param mapEntry the suggestion object to be edited
 	 * @return true if the user clicked OK, false otherwise.
 	 */
-	public boolean showMapEntryEditDialog(MapEntry mapEntry) {
+	public boolean showMapEntryEditDialog(MapItemData mapEntry) {
 		try {
 			// Load the fxml file and create a new stage for the popup dialog.
 			FXMLLoader loader = new FXMLLoader();
@@ -192,11 +165,6 @@ public class MainApp extends Application {
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
-
-			// Set the suggestion into the controller.
-//			MapEntryEditDialogController controller = loader.getController();
-//			controller.setDialogStage(dialogStage);
-//			controller.setMapEntry(mapEntry);
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
