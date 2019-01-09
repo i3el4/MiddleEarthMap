@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import application.model.DragIconType;
+import application.model.FixedTooltip;
 import application.model.MapItemData;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -28,6 +29,9 @@ public class DragIconController extends AnchorPane{
 	private boolean isIconDropped;
 	
 	private ObservableList<MapItemData> iconData = FXCollections.observableArrayList();
+	
+	private double xCoordinates;
+	private double yCoordinates;
 
 	public DragIconController() {
 
@@ -49,9 +53,9 @@ public class DragIconController extends AnchorPane{
 	@FXML
 	private void initialize() {
 
-		tooltip = new Tooltip("Ziehe dieses Icon über die Karte um einen Marker zu setzen");
+		tooltip = new FixedTooltip("Ziehe dieses Icon über die Karte um einen Marker zu setzen");
 
-		Tooltip.install(this, tooltip);
+		FixedTooltip.install(this, tooltip);
 
 		isIconDropped = false;
 		
@@ -70,11 +74,35 @@ public class DragIconController extends AnchorPane{
 		//relocates the object to a point that has been converted to
 		//scene coordinates
 		Point2D localCoords = getParent().sceneToLocal(p);
+		
+		double x = localCoords.getX() - (getBoundsInLocal().getWidth() / 2);
+		double y = localCoords.getY() - (getBoundsInLocal().getHeight() / 2);
 
-		relocate ( 
-				(int) (localCoords.getX() - (getBoundsInLocal().getWidth() / 2)),
-				(int) (localCoords.getY() - (getBoundsInLocal().getHeight() / 2))
-				);
+		relocate ( (int) (x), (int) (y) );
+	}
+	
+	public void setXCoordinates(double newX) {
+		
+		this.xCoordinates = newX;
+		
+	}
+	
+	public void setYCoordinates(double newY) {
+		
+		this.yCoordinates = newY;
+		
+	}
+	
+	public double getXCoordinates() {
+		
+		return xCoordinates;
+		
+	}
+	
+	public double getYCoordinates() {
+		
+		return yCoordinates;
+		
 	}
 
 	public DragIconType getType () { return mType; }

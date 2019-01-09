@@ -321,16 +321,24 @@ public class RootLayoutController extends AnchorPane{
 						Point2D cursorPoint = container.getValue("scene_coords");
 
 						droppedIcon.relocateToPoint(
-								new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
+								new Point2D(cursorPoint.getX() - 34, cursorPoint.getY() - 34)
 								);
 						
+						droppedIcon.setXCoordinates(cursorPoint.getX());
+						droppedIcon.setYCoordinates(cursorPoint.getY());
+						
+						// When the Icon is dropped the first time open a dialog stage to edi
+						// the icon information and set the status of the icon to "undropped"
 						if( ! droppedIcon.getIconDropStatus() ) {
 
 						showMapItemEditDialog(droppedIcon);
-						droppedIcon.getIconName();
 						droppedIcon.changeIconDropStatus();
+						
 						}
+						
+						// add a click event to dropped icon
 						addEditDialogOpener(droppedIcon);
+						// make the dropped Icon dragable again
 						addDragDetection(droppedIcon);
 					}
 				}
@@ -369,11 +377,16 @@ public class RootLayoutController extends AnchorPane{
 			dialogStage.initOwner(null);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
+			
+			// Sets the location of the dialog stage to the location of the dropped icon
+			dialogStage.setX(droppedDragIcon.getXCoordinates() + 180);
+			dialogStage.setY(droppedDragIcon.getYCoordinates() + 75);
 
-			// Set the suggestion into the controller.
+			// Set the icon into the controller.
 			MapItemEditDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
-			controller.setMapItem(droppedDragIcon);
+			controller.setMapItem(droppedDragIcon);			
+
 
 			// Show the dialog and wait until the user closes it
 			dialogStage.showAndWait();
