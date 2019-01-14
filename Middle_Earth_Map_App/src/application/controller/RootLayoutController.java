@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -72,6 +73,13 @@ public class RootLayoutController extends AnchorPane{
 	@FXML
 	private void initialize() {
 
+		// Group of Stack and ScrollPane
+		final Group group = new Group();
+		image_pane.getChildren().add(group);
+		final Group scrollContent = new Group(image_pane);
+		image_scroll_pane.setContent(scrollContent);
+
+		
 		//Add one icon that will be used for the drag-drop process
 		//This is added as a child to the root anchorpane so it can be visible
 		//on both sides of the split pane.
@@ -112,7 +120,11 @@ public class RootLayoutController extends AnchorPane{
 		// sets the image on zoom
 		ImageMagnifier iM = new ImageMagnifier();
 		iM.setImageOnZoom(image_pane);
-
+		iM.setZoomOnScroll(image_pane,image_scroll_pane,scrollContent);
+		iM.setCursor(image_pane);
+		// set the ScrollPane pannable
+		image_scroll_pane.setPannable(true);
+		
 		// center the scroll contents.
 		image_scroll_pane.setHvalue(image_scroll_pane.getHmin() + (image_scroll_pane.getHmax() - image_scroll_pane.getHmin()) / 2);
 		image_scroll_pane.setVvalue(image_scroll_pane.getVmin() + (image_scroll_pane.getVmax() - image_scroll_pane.getVmin()) / 2);
