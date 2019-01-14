@@ -31,10 +31,11 @@ public class RootLayoutController extends AnchorPane{
 
 	@FXML SplitPane base_pane;
 
-	@FXML ImageView map_image;
+	
 	@FXML ScrollPane image_scroll_pane;
 	@FXML StackPane image_pane;
 
+	@FXML ImageView map_image;
 	@FXML AnchorPane person_pane;
 	@FXML AnchorPane place_pane;
 	@FXML AnchorPane event_pane;
@@ -316,6 +317,7 @@ public class RootLayoutController extends AnchorPane{
 						DragIconType mType = mDragOverIcon.getType();
 						AnchorPane currentPane = getDroppablePane(mType);
 						currentPane.toFront();
+						currentPane.setVisible(true);
 						currentPane.getChildren().add(droppedIcon);
 
 						Point2D cursorPoint = container.getValue("scene_coords");
@@ -379,8 +381,8 @@ public class RootLayoutController extends AnchorPane{
 			dialogStage.setScene(scene);
 			
 			// Sets the location of the dialog stage to the location of the dropped icon
-			dialogStage.setX(droppedDragIcon.getXCoordinates() + 180);
-			dialogStage.setY(droppedDragIcon.getYCoordinates() + 75);
+			dialogStage.setX(droppedDragIcon.getXCoordinates());
+			dialogStage.setY(droppedDragIcon.getYCoordinates());
 
 			// Set the icon into the controller.
 			MapItemEditDialogController controller = loader.getController();
