@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class RootLayoutController extends AnchorPane{
 
@@ -377,6 +378,8 @@ public class RootLayoutController extends AnchorPane{
 			dialogStage.setTitle("Kartenmarkierung bearbeiten");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(null);
+	        dialogStage.setAlwaysOnTop(true);
+			
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
 			
