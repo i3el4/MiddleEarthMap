@@ -3,13 +3,10 @@ package application.controller;
 import java.io.IOException;
 
 import application.model.DragIconType;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 
 public class ButtonController extends Button {
 

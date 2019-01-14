@@ -1,19 +1,8 @@
 package application.controller;
 
 import java.io.IOException;
-
-import application.model.DragContainer;
-import application.model.DragIconType;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 public class MapSidePaneController extends VBox {

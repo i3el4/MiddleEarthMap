@@ -2,12 +2,9 @@ package application.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import application.model.DragIconType;
 import application.model.FixedTooltip;
 import application.model.MapItemData;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
