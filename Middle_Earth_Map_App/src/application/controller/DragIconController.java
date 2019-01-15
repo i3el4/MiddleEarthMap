@@ -113,7 +113,7 @@ public class DragIconController extends AnchorPane{
 
 		switch (mType) {
 
-		case ALL:
+		case HEADER:
 			getStyleClass().add("icon-header");
 			break;
 
@@ -187,7 +187,7 @@ public class DragIconController extends AnchorPane{
 	public void setDeserializedIconData(ArrayList<MapItemData> deserializedData) {
 		
 		for(MapItemData item : deserializedData) {
-			String name = item.getNameString();
+			String name = item.getAttributeString();
 			String description = item.getDescriptionString();
 			iconData.add(new MapItemData(name, description));
 		}

@@ -5,11 +5,11 @@
 
 <fx:root fx:id="button_root_pane" mnemonicParsing="false"
 	text="Button" type="Button" prefHeight="50.0" prefWidth="300.0"
-	alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" styleClass="button-map"
+	alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" styleClass="button-map"
 	stylesheets="@application.css" xmlns="http://javafx.com/javafx/8"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<graphic>
-		<DragIconController fx:id="default_icon"
+		<DragIconController fx:id="button_icon"
 			prefHeight="40.0" prefWidth="40.0" />
 	</graphic>
 </fx:root>

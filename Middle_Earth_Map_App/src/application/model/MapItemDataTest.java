@@ -20,9 +20,9 @@ class MapItemDataTest {
      * Test if the object is initialized correctly.
      */
 	public void testInit() throws Exception{
-		assertEquals("J.R.R. Tolkien", mapItem.getNameString());
+		assertEquals("J.R.R. Tolkien", mapItem.getAttributeString());
 		assertEquals("Autor", mapItem.getDescriptionString());
-		assertEquals("J.R.R. Tolkien", mapItem.getListItemName());
+		assertEquals("J.R.R. Tolkien", mapItem.getListItemAttribute());
 		assertEquals("Autor", mapItem.getListItemDescription());
 	}
 	
@@ -31,7 +31,7 @@ class MapItemDataTest {
      * Test if the object is initialized correctly.
      */
 	public void testInitDefault() throws Exception{
-		assertEquals(null, mapItemNull.getNameString());
+		assertEquals(null, mapItemNull.getAttributeString());
 		assertEquals(null, mapItemNull.getDescriptionString());
 	}
 	
@@ -40,9 +40,9 @@ class MapItemDataTest {
      * Test if the object is initialized correctly.
      */
 	public void testSetListItem() throws Exception{
-		mapItemNull.setListItemName();
+		mapItemNull.setListItemAttribute();
 		mapItemNull.setListItemDescription();
-		assertEquals(null, mapItemNull.getListItemName());
+		assertEquals(null, mapItemNull.getListItemAttribute());
 		assertEquals(null, mapItemNull.getListItemDescription());
 	}
 

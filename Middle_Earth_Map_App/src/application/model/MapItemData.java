@@ -17,21 +17,21 @@ public class MapItemData implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 6915849518904841746L;
-	private transient final StringProperty listItemName;
+	private transient final StringProperty listItemAttribute;
     private transient final StringProperty listItemDescription;
-    private String nameString;
+    private String attributeString;
     private String descriptionString;
 
     /**
-     * Constructor with some initial data.
+     * Constructor
      * 
-     * @param name
+     * @param attribute
      * @param description
      */
-    public MapItemData(String name, String description) {
-        this.listItemName = new SimpleStringProperty(name);
+    public MapItemData(String attribute, String description) {
+        this.listItemAttribute = new SimpleStringProperty(attribute);
         this.listItemDescription = new SimpleStringProperty(description);
-        this.nameString = name;
+        this.attributeString = attribute;
         this.descriptionString = description;
     }
     
@@ -43,16 +43,16 @@ public class MapItemData implements Serializable{
         this(null, null);
     }
   
-    public String getListItemName() {
-        return listItemName.get();
+    public String getListItemAttribute() {
+        return listItemAttribute.get();
     }
 
-    public void setListItemName() {
-        this.listItemName.set(nameString);
+    public void setListItemAttribute() {
+        this.listItemAttribute.set(attributeString);
     }
     
-    public StringProperty getListItemNameProperty() {
-        return listItemName;
+    public StringProperty getListItemAttributeProperty() {
+        return listItemAttribute;
     }
 
     public String getListItemDescription() {
@@ -67,8 +67,8 @@ public class MapItemData implements Serializable{
         return listItemDescription;
     }
 
-	public String getNameString() {
-		return nameString;
+	public String getAttributeString() {
+		return attributeString;
 	}
 
 	public String getDescriptionString() {

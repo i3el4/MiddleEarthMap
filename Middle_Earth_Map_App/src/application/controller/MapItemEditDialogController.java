@@ -21,18 +21,22 @@ import javafx.stage.Stage;
  */
 public class MapItemEditDialogController {
 
+	// TextField for adding map item name
 	@FXML private TextField name_field;
-	@FXML private TextField entry_field;
-	@FXML private TextField details_field;
+	// TextField for adding item attributes
+	@FXML private TextField attribute_field;
+	// TextField for adding item attribute descriptions
+	@FXML private TextField description_field;
 
+	// Table for displaying item attributes with descriptions
 	@FXML private TableView<MapItemData> item_table;
-	@FXML private TableColumn<MapItemData, String> entry_column;
-	@FXML private TableColumn<MapItemData, String> details_column;
+	@FXML private TableColumn<MapItemData, String> attributes_column;
+	@FXML private TableColumn<MapItemData, String> descriptions_column;
 
+	// dialog stage is opened for the clicked icon
 	private Stage dialogStage;
 	private DragIconController icon;
 	private ObservableList<MapItemData> iconData = FXCollections.observableArrayList();
-	//private boolean speichernGeklickt = false;
 
 	/**
 	 * Initializes the controller class. This method is automatically called
@@ -47,8 +51,10 @@ public class MapItemEditDialogController {
 		item_table.setItems(iconData);
 
 		// Initialize the item table with the two columns
-		entry_column.setCellValueFactory(cellData -> cellData.getValue().getListItemNameProperty());
-		details_column.setCellValueFactory(cellData -> cellData.getValue().getListItemDescriptionProperty());
+		attributes_column.setCellValueFactory(cellData -> cellData.getValue()
+				.getListItemAttributeProperty());
+		descriptions_column.setCellValueFactory(cellData -> cellData.getValue()
+				.getListItemDescriptionProperty());
 
 	}
 
@@ -122,8 +128,8 @@ public class MapItemEditDialogController {
 
 		String errorMessage = "";
 
-		if ( entry_field.getText() == null || entry_field.getText().length() == 0 ||
-				details_field.getText() == null || details_field.getText().length() == 0	) {
+		if ( attribute_field.getText() == null || attribute_field.getText().length() == 0 ||
+			description_field.getText() == null || description_field.getText().length() == 0 ) {
 			errorMessage += "Bitte geben Sie etwas in die entsprechenden Textfelder"
 					+ " ein bevor sie auf Hinzufügen klicken.\n"; 
 		}
@@ -160,7 +166,7 @@ public class MapItemEditDialogController {
 		// Iteriere über vorhandene Vorschläge in der Liste
 		while( 	uniqueItem && (i < iconData.size())) {
 
-			existingData = iconData.get(i).getListItemName();
+			existingData = iconData.get(i).getListItemAttribute();
 			i = i + 1;
 			uniqueItem = !existingData.toLowerCase().equals(newData.toLowerCase());
 		}
@@ -168,7 +174,8 @@ public class MapItemEditDialogController {
 	}
 
 	/**
-	 * Adds a new entry to the item-list through a click on the button
+	 * Called when the user clicks on the add button
+	 * Adds a new entry to the item-list through a the methode call addListItem()
 	 * 
 	 */
 	public void handleAddButton() {
@@ -181,12 +188,15 @@ public class MapItemEditDialogController {
 		}
 	}
 
-
+	/**
+	 * Called when the user clicks on the save button
+	 * Saves the data of the map item and closes the dialog stage
+	 */
 	@FXML
 	private void handleSave() {
 
-		if ( 	entry_field.getText() != null && entry_field.getText().length() != 0 &&
-				details_field.getText() != null && details_field.getText().length() != 0  ) {
+		if ( attribute_field.getText() != null && attribute_field.getText().length() != 0 &&
+			 description_field.getText() != null && description_field.getText().length() != 0 ) {
 
 			addListItem();
 
@@ -202,7 +212,12 @@ public class MapItemEditDialogController {
 
 		}
 	}
-
+	
+	/**
+	 * Called when the user hits enter during an event.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void handleEnterPressed(KeyEvent event) {
 
@@ -212,12 +227,16 @@ public class MapItemEditDialogController {
 
 		}
 	}
-
+	
+	/**
+	 * Adds the text in the entry and details textfield to the map data list
+	 * after the the text has been added the textfields are cleared
+	 */
 	private void addListItem() {
 
 		// create new string with data from the textfield
-		String newEntry = entry_field.getText().toString();
-		String newDetails = details_field.getText().toString();
+		String newEntry = attribute_field.getText().toString();
+		String newDetails = description_field.getText().toString();
 
 		if(isNew(newEntry)) {
 			// Add new item to the list and clear the textfield
@@ -227,8 +246,8 @@ public class MapItemEditDialogController {
 					+ newDetails + "' wurde dem Icon [" 
 					+ name_field.getText().toString() + "] hinzugefügt.");
 
-			entry_field.clear();
-			details_field.clear();
+			attribute_field.clear();
+			description_field.clear();
 
 		} else {
 			// throw error message
@@ -258,7 +277,8 @@ public class MapItemEditDialogController {
 			alert.initOwner(dialogStage);
 			alert.setTitle("Keine Auswahl");
 			alert.setHeaderText("Kein bestehender Listeneintrag ist ausgewählt");
-			alert.setContentText("Bitte wähle einen Eintrag aus, denn du aus der Liste löschen möchtest.");
+			alert.setContentText("Bitte wähle einen Eintrag aus, denn du aus der Liste "
+					+ "löschen möchtest.");
 
 			alert.showAndWait();
 		}

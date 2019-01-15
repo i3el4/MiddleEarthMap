@@ -26,10 +26,10 @@
 					prefHeight="45.0" promptText="Geben Sie hier einen Namen ein"
 					stylesheets="@application.css" />
 				<Label text="Zusatzinformationen:" />
-				<TextField fx:id="entry_field" promptText="Eintrag"
+				<TextField fx:id="attribute_field" promptText="Eintrag"
 					onKeyPressed="#handleEnterPressed" styleClass="text-field"
 					stylesheets="@application.css" />
-				<TextField fx:id="details_field"
+				<TextField fx:id="description_field"
 					onKeyPressed="#handleEnterPressed" promptText="Details"
 					styleClass="text-field" stylesheets="@application.css" />
 				<HBox alignment="center_left" minHeight="-Infinity"
@@ -48,9 +48,9 @@
 						<TableView fx:id="item_table"
 							styleClass="table-row-cell" stylesheets="@application.css">
 							<columns>
-								<TableColumn fx:id="entry_column" minWidth="-1.0"
+								<TableColumn fx:id="attributes_column" minWidth="-1.0"
 									prefWidth="100.0" text="Eintrag" />
-								<TableColumn fx:id="details_column"
+								<TableColumn fx:id="descriptions_column"
 									prefWidth="2000.0" text="Details" />
 							</columns>
 						</TableView>
