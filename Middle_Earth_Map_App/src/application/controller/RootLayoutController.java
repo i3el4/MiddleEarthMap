@@ -132,7 +132,7 @@ public class RootLayoutController extends AnchorPane{
 		// the buttons contain the drag and drop icon for marking the map
 		for (int i = 0; i < 5; i++) {
 
-			ButtonController btn = new ButtonController();
+			MapButtonController btn = new MapButtonController();
 			addPaneChanger(btn);
 			addDragDetection(btn.getButton_icon());
 
@@ -187,7 +187,7 @@ public class RootLayoutController extends AnchorPane{
 	 * @param button    map controller button in the map controller pane
 	 */
 
-	private void addPaneChanger(ButtonController button) {
+	private void addPaneChanger(MapButtonController button) {
 
 		button.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -273,7 +273,7 @@ public class RootLayoutController extends AnchorPane{
 				// before
 				container.addData ("type", 		icn.getType().toString());
 				container.addData ("name", 		icn.getIconName());
-				container.addData ("data", 		icn.getSerializeableIconData());
+				container.addData ("data", 		icn.getSerializableIconData());
 				container.addData ("status", 	icn.getIconDropStatus());
 		
 				content.put(DragContainer.AddNode, container);
@@ -464,6 +464,7 @@ public class RootLayoutController extends AnchorPane{
 			// Set the application icon.
 			dialogStage.getIcons().add(new Image("file:resources/images/TolkienIcon.jpg"));
 			dialogStage.setTitle("Kartenmarkierung bearbeiten");
+			
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(null);
 	        dialogStage.setAlwaysOnTop(true);

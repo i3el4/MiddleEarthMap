@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.util.Pair;
 

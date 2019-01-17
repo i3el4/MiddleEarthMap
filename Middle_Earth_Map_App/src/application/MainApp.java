@@ -17,7 +17,6 @@ public class MainApp extends Application {
 	 * Constructor
 	 */
 	public MainApp() {
-
 	}
 
 	@Override
@@ -35,8 +34,7 @@ public class MainApp extends Application {
 	}
 	
 	/**
-	 * Initializes the root layout and tries to load the last opened
-	 * map data file.
+	 * Initializes the root layout and sets the CCStylesheet
 	 */
 	public void initRootLayout() {
 		

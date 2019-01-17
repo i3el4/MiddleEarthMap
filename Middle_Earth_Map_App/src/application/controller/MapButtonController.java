@@ -16,7 +16,7 @@ import javafx.scene.control.Button;
  * @author Bela Ackermann
  */
 
-public class ButtonController extends Button {
+public class MapButtonController extends Button {
 
 	@FXML 
 	private Button button_root_pane;
@@ -25,10 +25,10 @@ public class ButtonController extends Button {
 
 	private DragIconType mType = null;
 
-	public ButtonController() {
+	public MapButtonController() {
 
 		FXMLLoader fxmlLoader = new FXMLLoader(
-				getClass().getResource("../view/Button_view.fxml")
+				getClass().getResource("../view/MapButton_view.fxml")
 				);
 
 		fxmlLoader.setRoot(this); 

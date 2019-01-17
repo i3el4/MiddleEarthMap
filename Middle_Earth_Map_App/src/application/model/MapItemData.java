@@ -6,15 +6,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * Model class for a MapItem.
- *
- * @author 	Bela Ackermann 
- * @version 	2018-10-18
+ * Helper class to wrap a list of map items. This is used for saving the
+ * list of map items to XML and for the DragContainer.
+ * 
+ * @author bela.ackermann (with instructions from code.makery.ch)
  */
+
 public class MapItemData implements Serializable{
 
     /**
-	 * 
+	 * Serializable data fields. StringProperty is not serializable thus
+	 * it is set on transient.
+	 * Not very good practice, but workaround to make MapItemData serializable
+	 * for DragContainer -> adding String simultaneously to StringProperty
 	 */
 	private static final long serialVersionUID = 6915849518904841746L;
 	private transient final StringProperty listItemAttribute;
@@ -25,8 +29,8 @@ public class MapItemData implements Serializable{
     /**
      * Constructor
      * 
-     * @param attribute
-     * @param description
+     * @param attribute    item attribute name
+     * @param description  item description
      */
     public MapItemData(String attribute, String description) {
         this.listItemAttribute = new SimpleStringProperty(attribute);
@@ -42,7 +46,12 @@ public class MapItemData implements Serializable{
     	// invoke constructor that assigns the properties
         this(null, null);
     }
-  
+    
+    /**
+     * Setters and Getters for String and StringProperty of the Items
+     * 
+     */
+    
     public String getListItemAttribute() {
         return listItemAttribute.get();
     }

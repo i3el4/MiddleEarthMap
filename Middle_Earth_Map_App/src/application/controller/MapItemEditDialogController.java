@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -81,8 +82,8 @@ public class MapItemEditDialogController {
 			name_field.setText(icon.getIconName());
 		}
 
-		if(icon.getIconData() != null) {
-			iconData = icon.getIconData();
+		if(icon.getAdditionalData() != null) {
+			iconData = icon.getAdditionalData();
 			item_table.setItems(iconData);
 		}
 
@@ -98,17 +99,21 @@ public class MapItemEditDialogController {
 		String errorMessage = "";
 
 		if (name_field.getText() == null || name_field.getText().length() == 0) {
+
 			errorMessage += "Bitte geben Sie erst einen Namen in das Textfeld"
 					+ " ein bevor sie auf Speichern klicken.\n"; 
+
 		}
 
 		if (errorMessage.length() == 0) {
+
 			return true;
 
 		} else {
 			// Show the error message.
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
+			alert.initModality(Modality.APPLICATION_MODAL);
 			alert.setTitle("Leeres Feld");
 			alert.setHeaderText("Ein Eingabefeld ist leer!");
 			alert.setContentText(errorMessage);
@@ -128,10 +133,14 @@ public class MapItemEditDialogController {
 
 		String errorMessage = "";
 
-		if ( attribute_field.getText() == null || attribute_field.getText().length() == 0 ||
-			description_field.getText() == null || description_field.getText().length() == 0 ) {
+		if ( 	attribute_field.getText() == null 
+				|| attribute_field.getText().length() == 0 
+				|| description_field.getText() == null 
+				|| description_field.getText().length() == 0 	) {
+
 			errorMessage += "Bitte geben Sie etwas in die entsprechenden Textfelder"
 					+ " ein bevor sie auf Hinzufügen klicken.\n"; 
+
 		}
 
 		if (errorMessage.length() == 0) {
@@ -141,6 +150,7 @@ public class MapItemEditDialogController {
 			// Show the error message.
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.initOwner(dialogStage);
+			alert.initModality(Modality.APPLICATION_MODAL);
 			alert.setTitle("Leeres Feld");
 			alert.setHeaderText("Eins oder beide Eingabefelder sind leer!");
 			alert.setContentText(errorMessage);
@@ -163,7 +173,7 @@ public class MapItemEditDialogController {
 		int i = 0;
 		String existingData;
 
-		// Iteriere über vorhandene Vorschläge in der Liste
+		// Iterate over the existing list item
 		while( 	uniqueItem && (i < iconData.size())) {
 
 			existingData = iconData.get(i).getListItemAttribute();
@@ -195,8 +205,10 @@ public class MapItemEditDialogController {
 	@FXML
 	private void handleSave() {
 
-		if ( attribute_field.getText() != null && attribute_field.getText().length() != 0 &&
-			 description_field.getText() != null && description_field.getText().length() != 0 ) {
+		if ( 	attribute_field.getText() != null 
+				&& attribute_field.getText().length() != 0 
+				&& description_field.getText() != null 
+				&& description_field.getText().length() != 0 	) {
 
 			addListItem();
 
@@ -206,13 +218,13 @@ public class MapItemEditDialogController {
 
 			icon.setIconName(name_field.getText());
 
-			icon.setIconData(item_table.getItems());
+			icon.setAdditionalData(item_table.getItems());
 
 			dialogStage.close();
 
 		}
 	}
-	
+
 	/**
 	 * Called when the user hits enter during an event.
 	 * 
@@ -227,7 +239,7 @@ public class MapItemEditDialogController {
 
 		}
 	}
-	
+
 	/**
 	 * Adds the text in the entry and details textfield to the map data list
 	 * after the the text has been added the textfields are cleared
@@ -252,6 +264,8 @@ public class MapItemEditDialogController {
 		} else {
 			// throw error message
 			Alert alert = new Alert(AlertType.ERROR);
+			alert.initOwner(dialogStage);
+			alert.initModality(Modality.APPLICATION_MODAL);
 			alert.setTitle("Listeneintrag besteht bereits");
 			alert.setHeaderText("Mögliche Duplikation des Eintrages");
 			alert.setContentText("Ein Eintrag mit dem selben Namen ist "
@@ -275,6 +289,7 @@ public class MapItemEditDialogController {
 			// Nothing selected.
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(dialogStage);
+			alert.initModality(Modality.APPLICATION_MODAL);
 			alert.setTitle("Keine Auswahl");
 			alert.setHeaderText("Kein bestehender Listeneintrag ist ausgewählt");
 			alert.setContentText("Bitte wähle einen Eintrag aus, denn du aus der Liste "
@@ -294,6 +309,7 @@ public class MapItemEditDialogController {
 
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.initOwner(dialogStage);
+		alert.initModality(Modality.APPLICATION_MODAL);
 		alert.setTitle("Markierung Löschen ist so nicht möglich!");
 		alert.setHeaderText("Momentaner Workaround:");
 		alert.setContentText("Um den Marker zu löschen, klicke auf Abbrechen"
