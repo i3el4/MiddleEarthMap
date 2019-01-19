@@ -20,45 +20,51 @@ import javafx.scene.layout.StackPane;
  */
 public class ImageMagnifier {
 
-	private int gestureCount;
+//	private int gestureCount;
+
+	/**
+	 * make the image zoomeable 
+	 * 
+	 * @param image
+	 */
+//	public void setImageOnZoom(StackPane image) {
+//
+//		image.setOnZoom(new EventHandler<ZoomEvent>() {
+//
+//			@Override
+//			public void handle(ZoomEvent event) {
+//				image.setScaleX(image.getScaleX() * event.getZoomFactor());
+//				image.setScaleY(image.getScaleY() * event.getZoomFactor());
+//
+//				event.consume();
+//			}
+//		});
+//
+//		image.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+//
+//			@Override
+//			public void handle(ZoomEvent event) {
+//				inc(image);
+//				event.consume();
+//			}
+//		});
+//
+//		image.setOnZoomFinished(new EventHandler<ZoomEvent>() {
+//
+//			@Override
+//			public void handle(ZoomEvent event) {
+//				dec(image);
+//				event.consume();
+//			}
+//		});
+//	}
 
 	/**
 	 * make the image zoomeable
 	 * 
-	 * @param image
+	 * @param image, scroll, scrollContent
 	 */
-	public void setImageOnZoom(StackPane image) {
-
-		image.setOnZoom(new EventHandler<ZoomEvent>() {
-
-			@Override
-			public void handle(ZoomEvent event) {
-				image.setScaleX(image.getScaleX() * event.getZoomFactor());
-				image.setScaleY(image.getScaleY() * event.getZoomFactor());
-
-				event.consume();
-			}
-		});
-
-		image.setOnZoomStarted(new EventHandler<ZoomEvent>() {
-
-			@Override
-			public void handle(ZoomEvent event) {
-				inc(image);
-				event.consume();
-			}
-		});
-
-		image.setOnZoomFinished(new EventHandler<ZoomEvent>() {
-
-			@Override
-			public void handle(ZoomEvent event) {
-				dec(image);
-				event.consume();
-			}
-		});
-	}
-
+	
 	public void setZoomOnScroll(StackPane image, ScrollPane scroll, Group scrollContent) {
 		// Zoom on Scroll
 		image.setOnScroll(new EventHandler<ScrollEvent>() {
@@ -96,24 +102,17 @@ public class ImageMagnifier {
 	 * calculation of the scrolloffset in local coordinates of the scroll content
 	 */
 	private Point2D figureScrollOffset(Node scrollContent, ScrollPane scroller) {
-		
-		double extraWidth = 	scrollContent.getLayoutBounds().getWidth() - 
+		double extraWidth = scrollContent.getLayoutBounds().getWidth() - 
 								scroller.getViewportBounds().getWidth();
-
 		double hScrollProportion = (scroller.getHvalue() - 
 									scroller.getHmin()) / (scroller.getHmax() - 
 									scroller.getHmin() );
-
 		double scrollXOffset = hScrollProportion * Math.max(0, extraWidth);
-
 		double extraHeight = 	scrollContent.getLayoutBounds().getHeight() - 
 								scroller.getViewportBounds().getHeight();
-
 		double vScrollProportion = ( scroller.getVvalue() - scroller.getVmin()) / 
 									(scroller.getVmax() - scroller.getVmin() );
-
 		double scrollYOffset = vScrollProportion * Math.max(0, extraHeight);
-
 		return new Point2D(scrollXOffset, scrollYOffset);
 	}
 
@@ -122,18 +121,14 @@ public class ImageMagnifier {
 	 * 
 	 * @param scrollContent, scroller, scaleFactor, scrollOffset
 	 */
-	protected void repositionScroller( 	Node scrollContent, 
+	protected void repositionScroller(Node scrollContent, 
 										ScrollPane scroller, 
 										double scaleFactor, 
 										Point2D scrollOffset) {
-
 		double scrollXOffset = scrollOffset.getX();
-		
 		double scrollYOffset = scrollOffset.getY();
-		
 		double extraWidth = scrollContent.getLayoutBounds().getWidth() - 
 							scroller.getViewportBounds().getWidth();
-		
 		if (extraWidth > 0) {
 			double halfWidth = scroller.getViewportBounds().getWidth() / 2 ;
 			
@@ -164,9 +159,15 @@ public class ImageMagnifier {
 		}
 	}
 
+	
+	/**
+	 * set the cursor to an open and closed hand when press and release the mouse
+	 * 
+	 * @param image
+	 */
 	public void setCursor(StackPane image) {
 
-		// Set the cursor to Open and Closed Hand
+		// Set the cursor to open Hand
 		image.setCursor(Cursor.OPEN_HAND);
 		image.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
@@ -186,25 +187,25 @@ public class ImageMagnifier {
 	 * 
 	 * @param shape Target of the gesture
 	 */    
-	private void inc(StackPane image) {
-
-		if (gestureCount == 0) {
-			image.setEffect(new Lighting());
-		}
-		gestureCount++;
-	}
+//	private void inc(StackPane image) {
+//
+//		if (gestureCount == 0) {
+//			image.setEffect(new Lighting());
+//		}
+//		gestureCount++;
+//	}
 
 	/**
 	 * Restores the object to its original state when the gesture completes.
 	 * 
 	 * @param shape Target of the gesture
 	 */    
-	private void dec(StackPane image) {
-
-		gestureCount--;
-		if (gestureCount == 0) {
-			image.setEffect(null);
-		}
-	}
+//	private void dec(StackPane image) {
+//
+//		gestureCount--;
+//		if (gestureCount == 0) {
+//			image.setEffect(null);
+//		}
+//	}
 
 }
