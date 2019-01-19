@@ -13,11 +13,11 @@ public class DragContainer implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1890998765646621338L;
+	private final List <Pair<String, Object> > mDataPairs = new ArrayList <Pair<String, Object> > ();
 
 	public static final DataFormat AddNode = 
 			new DataFormat("application.DragIcon.add");
 	
-	private final List <Pair<String, Object> > mDataPairs = new ArrayList <Pair<String, Object> > ();
 	
 	public void addData (String key, Object value) {
 		mDataPairs.add(new Pair<String, Object>(key, value));		
@@ -36,4 +36,9 @@ public class DragContainer implements Serializable {
 	}
 	
 	public List <Pair<String, Object> > getData () { return mDataPairs; }	
+	
+	public int getNumberOfData() {
+		return mDataPairs.size();
+	}
+
 }
