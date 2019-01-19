@@ -4,7 +4,7 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Window;
 
 /**
- * Extention to Tooltip, to fix the bug that when the Tooltip is active and 
+ * Subclass to Tooltip, to fix the bug that when the Tooltip is active and 
  * a second stage is opened, when the node on the primary stage is hovered, 
  * it will come in front of the second stage.
  */

@@ -6,32 +6,36 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * Model class for a MapItem.
- *
- * @author 	Bela Ackermann 
- * @version 	2018-10-18
+ * Helper class to wrap a list of map items. This is used for saving the
+ * list of map items to XML and for the DragContainer.
+ * 
+ * @author bela.ackermann (with instructions from code.makery.ch)
  */
+
 public class MapItemData implements Serializable{
 
     /**
-	 * 
+	 * Serializable data fields. StringProperty is not serializable thus
+	 * it is set on transient.
+	 * Not very good practice, but workaround to make MapItemData serializable
+	 * for DragContainer -> adding String simultaneously to StringProperty
 	 */
 	private static final long serialVersionUID = 6915849518904841746L;
-	private transient final StringProperty listItemName;
+	private transient final StringProperty listItemAttribute;
     private transient final StringProperty listItemDescription;
-    private String nameString;
+    private String attributeString;
     private String descriptionString;
 
     /**
-     * Constructor with some initial data.
+     * Constructor
      * 
-     * @param name
-     * @param description
+     * @param attribute    item attribute name
+     * @param description  item description
      */
-    public MapItemData(String name, String description) {
-        this.listItemName = new SimpleStringProperty(name);
+    public MapItemData(String attribute, String description) {
+        this.listItemAttribute = new SimpleStringProperty(attribute);
         this.listItemDescription = new SimpleStringProperty(description);
-        this.nameString = name;
+        this.attributeString = attribute;
         this.descriptionString = description;
     }
     
@@ -42,17 +46,22 @@ public class MapItemData implements Serializable{
     	// invoke constructor that assigns the properties
         this(null, null);
     }
-  
-    public String getListItemName() {
-        return listItemName.get();
+    
+    /**
+     * Setters and Getters for String and StringProperty of the Items
+     * 
+     */
+    
+    public String getListItemAttribute() {
+        return listItemAttribute.get();
     }
 
-    public void setListItemName() {
-        this.listItemName.set(nameString);
+    public void setListItemAttribute() {
+        this.listItemAttribute.set(attributeString);
     }
     
-    public StringProperty getListItemNameProperty() {
-        return listItemName;
+    public StringProperty getListItemAttributeProperty() {
+        return listItemAttribute;
     }
 
     public String getListItemDescription() {
@@ -67,8 +76,8 @@ public class MapItemData implements Serializable{
         return listItemDescription;
     }
 
-	public String getNameString() {
-		return nameString;
+	public String getAttributeString() {
+		return attributeString;
 	}
 
 	public String getDescriptionString() {

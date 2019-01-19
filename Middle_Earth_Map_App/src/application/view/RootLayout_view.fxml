@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import application.controller.MapSidePaneController?>
+<?import javafx.geometry.Insets?>
 
 <fx:root fx:id="root_pane" minHeight="200.0" minWidth="200.0"
 	stylesheets="@application.css" type="javafx.scene.layout.AnchorPane"
@@ -20,15 +21,19 @@
 			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 			AnchorPane.topAnchor="0.0">
 			<items>
-				<MapSidePaneController fx:id="controller_pane" maxWidth="316.0">
+				<MapSidePaneController fx:id="controller_pane"
+					maxWidth="316.0">
+					<padding>
+						<Insets top="20.0" right="8.0" bottom="8.0" left="8.0" />
+					</padding>
 				</MapSidePaneController>
 				<ScrollPane fx:id="image_scroll_pane">
 					<content>
-						<StackPane fx:id="image_pane"
+						<StackPane fx:id="image_stack_pane"
 							accessibleRole="IMAGE_VIEW" prefHeight="5389.0"
 							prefWidth="8000.0">
 							<children>
-								<ImageView fx:id="map_image" pickOnBounds="true"
+								<ImageView fx:id="map_pane" pickOnBounds="true"
 									preserveRatio="true" />
 								<AnchorPane fx:id="person_pane"></AnchorPane>
 								<AnchorPane fx:id="place_pane"></AnchorPane>

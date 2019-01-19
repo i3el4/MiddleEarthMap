@@ -1,7 +1,10 @@
 package application.controller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
 import application.model.DragIconType;
 import application.model.FixedTooltip;
 import application.model.MapItemData;
@@ -13,20 +16,24 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 
-public class DragIconController extends AnchorPane{
+public class DragIconController extends AnchorPane implements Serializable{
 
-	@FXML AnchorPane icon_root_pane;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6741952577473661325L;
+
+	@FXML 
+	private transient AnchorPane icon_root_pane;
 
 	private DragIconType mType = null;
-	
-	private String name = null;
-	
-	private Tooltip tooltip;
-		
-	private boolean isIconDropped;
-	
-	private ObservableList<MapItemData> iconData = FXCollections.observableArrayList();
-	
+
+	private String name = null;	
+	private transient Tooltip tooltip;
+
+	private ObservableList<MapItemData> additionalData = FXCollections.observableArrayList();
+
+	private boolean dropped;
 	private double xCoordinates;
 	private double yCoordinates;
 
@@ -47,6 +54,14 @@ public class DragIconController extends AnchorPane{
 		}
 	}
 
+	/**
+	 * Initialize the DragIconController:
+	 * 
+	 *  - Sets the Tooltip text of the source icons in the map side controll pane to a
+	 *    default text.
+	 *  - Installs the tooltip to the AnchorPane
+	 *  - Sets the icon drop status to false
+	 */
 	@FXML
 	private void initialize() {
 
@@ -54,56 +69,46 @@ public class DragIconController extends AnchorPane{
 
 		FixedTooltip.install(this, tooltip);
 
-		isIconDropped = false;
-		
-	}
-	
-	public void setTooltipText() {
-		tooltip.setText(name);
+		dropped = false;
+
 	}
 
-	public String getTooltipText() {
-		return tooltip.getText();
+	/**
+	 * Set icon name and set tooltip information to name
+	 * @param name  icon name and title
+	 */
+	public void setIconName(String name) {
+		this.name = name;
+		setTooltipText();
 	}
 
-	public void relocateToPoint (Point2D p) {
+	/**
+	 * icon name getter
+	 * @return name  name of icon as String
+	 */
+	public String getIconName() { return name; }
 
-		//relocates the object to a point that has been converted to
-		//scene coordinates
-		Point2D localCoords = getParent().sceneToLocal(p);
-		
-		double x = localCoords.getX() - (getBoundsInLocal().getWidth() / 2);
-		double y = localCoords.getY() - (getBoundsInLocal().getHeight() / 2);
+	/**
+	 * Set the tooltip text according to the icon name
+	 */
+	public void setTooltipText() { tooltip.setText(name); }
 
-		relocate ( (int) (x), (int) (y) );
-	}
-	
-	public void setXCoordinates(double newX) {
-		
-		this.xCoordinates = newX;
-		
-	}
-	
-	public void setYCoordinates(double newY) {
-		
-		this.yCoordinates = newY;
-		
-	}
-	
-	public double getXCoordinates() {
-		
-		return xCoordinates;
-		
-	}
-	
-	public double getYCoordinates() {
-		
-		return yCoordinates;
-		
-	}
+	/**
+	 * @return tooltip  tooltip text as String
+	 */
+	public String getTooltipText() { return tooltip.getText(); }
 
+	/**
+	 * get map drag icon type
+	 * @return mType  type of the map icon
+	 */
 	public DragIconType getType () { return mType; }
 
+	/**
+	 * The appropriate StyleClass is chosen and added to the 
+	 * drag icon.
+	 * @param type	 map icon type
+	 */
 	public void setType (DragIconType type) {
 
 		mType = type;
@@ -113,7 +118,7 @@ public class DragIconController extends AnchorPane{
 
 		switch (mType) {
 
-		case ALL:
+		case HEADER:
 			getStyleClass().add("icon-header");
 			break;
 
@@ -137,61 +142,130 @@ public class DragIconController extends AnchorPane{
 			break;
 		}
 	}
-	
+
 	/**
-	 * Returns the data as an observable list of map item information. 
-	 * @return
+	 * get additional data of the icon 
+	 * @return additionalData   map of Strings
 	 */
-	public ObservableList<MapItemData> getIconData() {
-		return iconData;
-	}
+	public ObservableList<MapItemData> getAdditionalData() {
 
-	public void setIconData(ObservableList<MapItemData> itemData) {
-		iconData = itemData;
+		return additionalData;
 
 	}
 
-	public void setIconName(String name) {
-		this.name = name;
-		setTooltipText();
+	/**
+	 * Setter for additional data of the icon
+	 * @param data  List of MapItemData that contains name and 
+	 * 				description of the input
+	 */
+	public void setAdditionalData(ObservableList<MapItemData> data) {
+
+		this.additionalData = data;
 
 	}
 
-	public String getIconName() {
-		return name;
-	}
-	
-	public boolean getIconDropStatus() {
-		return isIconDropped;
+	/**
+	 * Update the position of the dragged icon. 
+	 * 
+	 * The method is called in the DragDetected() and DragOver() event handlers 
+	 * and it updates the position of the icon based on coordinates transformed 
+	 * to the Scene coordinate space
+	 * @param p  new location point
+	 */
+	public void relocateToPoint (Point2D p) {
+
+		//relocates the object to a point that has been converted to
+		//scene coordinates
+		Point2D localCoords = getParent().sceneToLocal(p);
+
+		double x = localCoords.getX() - (getBoundsInLocal().getWidth() / 2);
+		double y = localCoords.getY() - (getBoundsInLocal().getHeight() / 2);
+
+		relocate ( (int) (x), (int) (y) );
 	}
 
-	public void changeIconDropStatus() {
-		isIconDropped = !isIconDropped;
+	/**
+	 * Setter for the map coordinates of the icon
+	 * @param newX
+	 */
+	public void setXCoordinates(double newX) { this.xCoordinates = newX; }
+	/**
+	 * Setter for the map coordinates of the icon
+	 * @param newY  y-coordinate, of the map
+	 */
+	public void setYCoordinates(double newY) { this.yCoordinates = newY; }
+	/**
+	 * get map coordinate of the icon as a double
+	 * @return xCoordinate
+	 */
+	public double getXCoordinates() { return xCoordinates; }
+	/**
+	 * get map coordinate of the icon as a double
+	 * @return yCoordinate
+	 */
+	public double getYCoordinates() { return yCoordinates; }
+
+	/**
+	 *	Getter forcicon drop status
+	 * @return dropped  true, when icon is set on map
+	 * 					false when it is the source icon
+	 */
+	public boolean getIconDropStatus() { return dropped; }
+	/**
+	 * Setter for icon drop status
+	 * @param newStatus   true, for icon on map
+	 * 					  false for source icon 
+	 */
+	public void setIconDropStatus(boolean newStatus) { 
+		dropped = newStatus;
 	}
 
-	public void setIconDropStatus(boolean iconDropStatus) {
-		isIconDropped = iconDropStatus;		
-	}
+	/**
+	 * changes the icon drop status
+	 */
+	public void changeIconDropStatus() { dropped = !dropped; }
 
-	public ArrayList<MapItemData> getSerializeableIconData() {
-		
-		ArrayList<MapItemData> data = new ArrayList<>();
-		
-		for(MapItemData item : iconData) {
+
+	/**
+	 * Make additional data serializable.
+	 * ObservableList is not serializable thus it needs to be converted
+	 * to ArraList.
+	 * Not very good practice, but workaround to make MapItemData serializable
+	 * for DragContainer -> adding String simultaneously to StringProperty
+	 * @return data  serializable List of additional icon data
+	 */
+	public List<MapItemData> getSerializableIconData() {
+
+		List<MapItemData> data = new ArrayList<>();
+
+		for(MapItemData item : additionalData) {
+
 			data.add(item);
+
 		}
-				
+
 		return data;
 	}
 
-	public void setDeserializedIconData(ArrayList<MapItemData> deserializedData) {
-		
+	/**
+	 * Setter for the additional icon data of the ObservableList
+	 * 
+	 * the data has been serialized and deserialized during the drag and drop
+	 * event. After the drag and drop event is completed the deserialized List
+	 * is converted to an ObserveableList.
+	 * 
+	 * @param deserializedData  List of MapItemData with only String content
+	 */
+	public void setDeserializedIconData(List<MapItemData> deserializedData) {
+
 		for(MapItemData item : deserializedData) {
-			String name = item.getNameString();
+
+			String name = item.getAttributeString();
 			String description = item.getDescriptionString();
-			iconData.add(new MapItemData(name, description));
+			additionalData.add(new MapItemData(name, description));
+
 		}
-		
+
 	}
 
 
