@@ -206,7 +206,7 @@ public class DragIconController extends AnchorPane implements Serializable{
 	public double getYCoordinates() { return yCoordinates; }
 
 	/**
-	 *	Getter forcicon drop status
+	 *	Getter for icon drop status
 	 * @return dropped  true, when icon is set on map
 	 * 					false when it is the source icon
 	 */

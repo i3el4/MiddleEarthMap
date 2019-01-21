@@ -88,7 +88,7 @@ public class MapItemEditDialogController {
 		}
 
 	}
-
+	
 	/**
 	 * Validates the user input in the name text field.
 	 * 
