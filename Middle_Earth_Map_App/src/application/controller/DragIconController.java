@@ -210,7 +210,7 @@ public class DragIconController extends AnchorPane implements Serializable{
 	 * @return dropped  true, when icon is set on map
 	 * 					false when it is the source icon
 	 */
-	public boolean getIconDropStatus() { return dropped; }
+	public boolean isDroppedOnMap() { return dropped; }
 	/**
 	 * Setter for icon drop status
 	 * @param newStatus   true, for icon on map

@@ -1,10 +1,13 @@
 package application.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import application.model.DragContainer;
 import application.model.DragIconType;
 import application.model.ImageMagnifier;
+import application.model.MapDataWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,7 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RootLayoutController extends AnchorPane{
-	
+
 	// FXML ANNOTATIONS FOR SETTING UP THE ROOTLAYOUT:
 	//
 	// SplitPane containing the image_scroll_pane on the right
@@ -47,7 +50,7 @@ public class RootLayoutController extends AnchorPane{
 	@FXML AnchorPane place_pane;
 	@FXML AnchorPane event_pane;
 	@FXML AnchorPane assorted_pane;
-	
+
 	// pane for the sidebar controller of the map
 	@FXML MapSidePaneController controller_pane;
 
@@ -56,13 +59,16 @@ public class RootLayoutController extends AnchorPane{
 	//
 	// Drag Icon (extends AnchorPane) used for Drag and Drop events
 	private DragIconController mDragOverIcon = null;
-	
+
 	// DragOver event handler for the root AnchorPane.
 	private EventHandler<DragEvent> mIconDragOverRoot = null;
 	//  DragOver event handler for the image pane.
 	private EventHandler<DragEvent> mIconDragOverImagePane = null;
 	// DragDropped event handler
 	private EventHandler<DragEvent> mIconDragDropped = null;
+
+	//
+	private List<DragIconController> mapIcons;
 
 	/**
 	 * Constructor for the RootLayoutController
@@ -86,19 +92,19 @@ public class RootLayoutController extends AnchorPane{
 			throw new RuntimeException(exception);
 		}
 	}
-	
+
 	/**
 	 * Initializes the dynamic root before the constructor is called
 	 */
 	@FXML
 	private void initialize() {
-		
+
 		// Group of Stack and ScrollPane
 		final Group group = new Group();
 		image_stack_pane.getChildren().add(group);
 		final Group scrollContent = new Group(image_stack_pane);
 		image_scroll_pane.setContent(scrollContent);
-		
+
 		// sets the image while preserving the ratio
 		map_pane.setImage(new Image("file:resources/images/ihypkemxzapuu.jpg"));
 		map_pane.setPreserveRatio(true);
@@ -110,13 +116,13 @@ public class RootLayoutController extends AnchorPane{
 		iM.setCursor(image_stack_pane);
 		// set the ScrollPane pannable
 		image_scroll_pane.setPannable(true);
-		
+
 		// center the scroll contents.
 		image_scroll_pane.setHvalue(image_scroll_pane.getHmin()
 				+ (image_scroll_pane.getHmax() - image_scroll_pane.getHmin()) / 2);
 		image_scroll_pane.setVvalue(image_scroll_pane.getVmin()
 				+ (image_scroll_pane.getVmax() - image_scroll_pane.getVmin()) / 2);
-	
+
 		// Add one icon that will be used for the drag-drop process
 		// This is added as a child to the root anchorpane so it can be visible
 		// on both sides of the split pane.
@@ -124,7 +130,7 @@ public class RootLayoutController extends AnchorPane{
 
 		mDragOverIcon.setVisible(false);
 		mDragOverIcon.setOpacity(0.65);
-		
+
 		getChildren().add(mDragOverIcon);
 
 		// populate the controller_pane with the header button and 
@@ -178,7 +184,7 @@ public class RootLayoutController extends AnchorPane{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * addPaneChanger for button action to change the pane, where icons will be
 	 * dropped on. Changes the stack order of the imae_stack_pane and sets 
@@ -195,7 +201,7 @@ public class RootLayoutController extends AnchorPane{
 			public void handle(ActionEvent event) {
 				// list of the panes in the image StackPane
 				ObservableList<Node> children = image_stack_pane.getChildren();
-				
+
 				// gets the type of button that is clicked and gets the
 				// according pane for the drop event 
 				AnchorPane currentPane = getDroppablePane(button.getType());
@@ -242,16 +248,24 @@ public class RootLayoutController extends AnchorPane{
 				image_stack_pane.setOnDragOver(mIconDragOverImagePane);
 				image_stack_pane.setOnDragDropped(mIconDragDropped);
 
+
 				// get a reference to the clicked DragIcon object
 				DragIconController icn = (DragIconController) event.getSource();
+
+//				// removes icon from list that is used for saving the data
+//				if( icn.isDroppedOnMap() ) {
+//
+//					removeIconFromList(icn);
+//
+//				}
 
 				// get the pane from which the icon for dragging is sitting on
 				// if icon type is null, the source pane is the controller_pane			
 				AnchorPane sourcePane = getDroppablePane(icn.getType());
-				
-				// if the pane is not the controller_pane remove the source icon
-				// after the drag is detected --> cutting 
-				// else do nothing with the source icon --> copying
+
+				// if the pane is not the controller_pane: remove the source icon
+				// after drag is detected (analog to a cut and paste procedure)
+				// else do nothing with source icon (analog to copy and paste)
 				if( sourcePane != null ) {
 					sourcePane.getChildren().remove(icn);
 				}
@@ -261,7 +275,7 @@ public class RootLayoutController extends AnchorPane{
 				mDragOverIcon.setType(icn.getType());
 				// relocate the mDragOverIcon
 				mDragOverIcon.relocateToPoint(new Point2D (	event.getSceneX(), 
-															event.getSceneY()));
+						event.getSceneY()));
 				// creates a container for the clipboard content that will store
 				// all the information that needs to be restored after the drag event 
 				// is finished
@@ -274,12 +288,12 @@ public class RootLayoutController extends AnchorPane{
 				container.addData ("type", 		icn.getType().toString());
 				container.addData ("name", 		icn.getIconName());
 				container.addData ("data", 		icn.getSerializableIconData());
-				container.addData ("status", 	icn.getIconDropStatus());
-		
+				container.addData ("status", 	icn.isDroppedOnMap());
+
 				content.put(DragContainer.AddNode, container);
 
 				mDragOverIcon.startDragAndDrop (TransferMode.ANY).setContent(content);
-				
+
 				// making the hidden mDragOverIcon visible for duration of drag event
 				mDragOverIcon.setVisible(true);
 				mDragOverIcon.setMouseTransparent(true);
@@ -309,7 +323,7 @@ public class RootLayoutController extends AnchorPane{
 	 * Finally to remove the drag event handlers that were added in the DragDetected 
 	 * event a DragDone event handler is created.
 	 */
-	
+
 	private void buildDragHandlers() {
 
 		//drag over transition to move widget form left pane to right pane
@@ -360,7 +374,7 @@ public class RootLayoutController extends AnchorPane{
 			public void handle(DragEvent event) {
 
 				DragContainer container = 
-				(DragContainer) event.getDragboard().getContent(DragContainer.AddNode );
+						(DragContainer) event.getDragboard().getContent(DragContainer.AddNode );
 
 				container.addData ( "scene_coords", 
 						new Point2D( event.getSceneX(), event.getSceneY() ) );
@@ -398,10 +412,10 @@ public class RootLayoutController extends AnchorPane{
 						// gets the data from the source icon that was stored in the
 						// drag container and assigns it to the dropped icon
 						droppedIcon.setType(DragIconType.valueOf(
-														container.getValue("type")));
+								container.getValue("type")));
 						droppedIcon.setIconName(		container.getValue("name"));
 						droppedIcon.setDeserializedIconData(
-														container.getValue("data"));
+								container.getValue("data"));
 						droppedIcon.setIconDropStatus(	container.getValue("status"));
 
 
@@ -415,22 +429,29 @@ public class RootLayoutController extends AnchorPane{
 
 						droppedIcon.relocateToPoint(
 								new Point2D( cursorPoint.getX() - 34, 
-											 cursorPoint.getY() - 34 ) 
+										cursorPoint.getY() - 34 ) 
 								);
 						// sets the coordinates of the dropped icon for storing
 						droppedIcon.setXCoordinates(cursorPoint.getX());
 						droppedIcon.setYCoordinates(cursorPoint.getY());
-						
+
 						// When the Icon is dropped the first time open a dialog stage 
 						// to edit the icon information and set the status of the icon 
 						// to "dropped"
-						if( ! droppedIcon.getIconDropStatus() ) {
+						if( ! droppedIcon.isDroppedOnMap() ) {
 
-						showMapItemEditDialog(droppedIcon);
-						droppedIcon.changeIconDropStatus();
-						
+							showMapItemEditDialog(droppedIcon);
+							droppedIcon.changeIconDropStatus();
+							System.out.println("test");
+//							addIconToList(droppedIcon);
 						}
-						
+
+//						} else {
+//							
+////							addIconToList(droppedIcon);
+//
+//						}
+
 						// add a click event to dropped icon
 						addEditDialogOpener(droppedIcon);
 						// make the dropped Icon dragable again
@@ -453,7 +474,7 @@ public class RootLayoutController extends AnchorPane{
 	 */
 	public boolean showMapItemEditDialog(DragIconController droppedDragIcon) {
 		try {
-			
+
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(RootLayoutController.class.getResource( 
 					"../view/MapItemEditDialog_view.fxml" ) );
@@ -464,14 +485,14 @@ public class RootLayoutController extends AnchorPane{
 			// Set the application icon.
 			dialogStage.getIcons().add(new Image("file:resources/images/TolkienIcon.jpg"));
 			dialogStage.setTitle("Kartenmarkierung bearbeiten");
-			
+
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(null);
-	        dialogStage.setAlwaysOnTop(true);
-			
+			dialogStage.setAlwaysOnTop(true);
+
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
-			
+
 			// Sets the location of the dialog stage to the location of the dropped icon
 			dialogStage.setX(droppedDragIcon.getXCoordinates());
 			dialogStage.setY(droppedDragIcon.getYCoordinates());
@@ -503,11 +524,51 @@ public class RootLayoutController extends AnchorPane{
 		dragIcon.setOnMouseClicked(new EventHandler <MouseEvent> () {
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 				showMapItemEditDialog(dragIcon);
-				
-				}
+
+			}
 		});
 	}
+	
+	//TODO 
+	private void addIconToList(DragIconController mapIcon) {
+		
+		if(mapIcon != null) {
+			
+			mapIcons.add(mapIcon);	
+			System.out.println("Item was added to the ListWrapper");
+			
+		} else {
+			
+			System.out.println("There was no item added to the ListWrapper");
+			
+		}
+		
+	}
+	
+	private void removeIconFromList(DragIconController mapIcon) {
+		
+		Iterator<DragIconController> it = mapIcons.iterator();
+		boolean itemFound = false;
+		
+		while( it.hasNext() && !itemFound ) {
+			
+			DragIconController icon = it.next();
+			
+			if( icon.equals(mapIcon) ) {
+				
+				it.remove();
+				itemFound = true;
+				System.out.println("Item has been removed from the ListWrapper");
+				
+			} else {
+				
+				System.out.println("There was no item removed from the ListWrapper");
+				
+			}	
+		}	
+	}
+	
 }
 
