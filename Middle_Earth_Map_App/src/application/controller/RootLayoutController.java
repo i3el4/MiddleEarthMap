@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -283,7 +284,9 @@ public class RootLayoutController extends AnchorPane{
 				// making the hidden mDragOverIcon visible for duration of drag event
 				mDragOverIcon.setVisible(true);
 				mDragOverIcon.setMouseTransparent(true);
-				event.consume();					
+				event.consume();		
+				
+
 			}
 		});
 	}	
@@ -437,7 +440,7 @@ public class RootLayoutController extends AnchorPane{
 						addDragDetection(droppedIcon);
 					}
 				}
-
+				
 				event.consume();
 			}
 		});

@@ -12,7 +12,7 @@ import javafx.util.Pair;
 class DragContainerTest {
 	
 	public DragContainer container;
-	public Object object1;
+	public Object object1; 
 	public Object object2;
 	
 	@BeforeEach
