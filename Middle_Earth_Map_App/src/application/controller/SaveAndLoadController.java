@@ -55,7 +55,6 @@ public class SaveAndLoadController extends VBox {
 	@FXML
 	private void initialize() {
 
-		//TODO: Add methodes to save and load content
 		// Try to load last opened map file.
 		File file = getMapDataFilePath();
 		if (file != null) {
@@ -138,7 +137,7 @@ public class SaveAndLoadController extends VBox {
 
 
 	/**
-	 * Returns the suggestion file preference, i.e. the file that was last opened.
+	 * Returns the map file preference, i.e. the file that was last opened.
 	 * The preference is read from the OS specific registry. If no such
 	 * preference can be found, null is returned.
 	 * 

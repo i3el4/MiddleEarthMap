@@ -1,20 +1,16 @@
 package application.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
 import application.model.DragContainer;
 import application.model.DragIconType;
 import application.model.ImageMagnifier;
-import application.model.MapDataWrapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -68,8 +64,8 @@ public class RootLayoutController extends AnchorPane{
 	// DragDropped event handler
 	private EventHandler<DragEvent> mIconDragDropped = null;
 
-	//
-	private List<DragIconController> mapIcons;
+//	// list used for saving the icons on the map
+//	private List<DragIconController> mapIcons;
 
 	/**
 	 * Constructor for the RootLayoutController
@@ -193,7 +189,6 @@ public class RootLayoutController extends AnchorPane{
 	 * 
 	 * @param button    map controller button in the map controller pane
 	 */
-
 	private void addPaneChanger(MapButtonController button) {
 
 		button.setOnAction(new EventHandler<ActionEvent>() {
@@ -431,8 +426,8 @@ public class RootLayoutController extends AnchorPane{
 						Point2D cursorPoint = container.getValue("scene_coords");
 
 						droppedIcon.relocateToPoint(
-								new Point2D( cursorPoint.getX() - 34, 
-										cursorPoint.getY() - 34 ) 
+								new Point2D( cursorPoint.getX(), 
+										cursorPoint.getY() ) 
 								);
 						// sets the coordinates of the dropped icon for storing
 						droppedIcon.setXCoordinates(cursorPoint.getX());
@@ -446,14 +441,10 @@ public class RootLayoutController extends AnchorPane{
 							showMapItemEditDialog(droppedIcon);
 							droppedIcon.changeIconDropStatus();
 							System.out.println("test");
+//							// adds icon to list that is used for saving and loading the map
+//							// icons later
 //							addIconToList(droppedIcon);
 						}
-
-//						} else {
-//							
-////							addIconToList(droppedIcon);
-//
-//						}
 
 						// add a click event to dropped icon
 						addEditDialogOpener(droppedIcon);
@@ -534,44 +525,51 @@ public class RootLayoutController extends AnchorPane{
 		});
 	}
 	
-	//TODO 
-	private void addIconToList(DragIconController mapIcon) {
-		
-		if(mapIcon != null) {
-			
-			mapIcons.add(mapIcon);	
-			System.out.println("Item was added to the ListWrapper");
-			
-		} else {
-			
-			System.out.println("There was no item added to the ListWrapper");
-			
-		}
-		
-	}
-	
-	private void removeIconFromList(DragIconController mapIcon) {
-		
-		Iterator<DragIconController> it = mapIcons.iterator();
-		boolean itemFound = false;
-		
-		while( it.hasNext() && !itemFound ) {
-			
-			DragIconController icon = it.next();
-			
-			if( icon.equals(mapIcon) ) {
-				
-				it.remove();
-				itemFound = true;
-				System.out.println("Item has been removed from the ListWrapper");
-				
-			} else {
-				
-				System.out.println("There was no item removed from the ListWrapper");
-				
-			}	
-		}	
-	}
+	/**
+	 * TODO: create methodes for saving and loading the map data.
+	 * The icons need to be saved in a list when dropped to the map, and then removed again
+	 * when the icon is set on drag detected.
+	 * 
+	 * this list can then be used during loading and saving to create new icons on the map
+	 * according to the ones saved in the list.
+	 */
+//	private void addIconToList(DragIconController mapIcon) {
+//		
+//		if(mapIcon != null) {
+//			
+//			mapIcons.add(mapIcon);	
+//			System.out.println("Item was added to the ListWrapper");
+//			
+//		} else {
+//			
+//			System.out.println("There was no item added to the ListWrapper");
+//			
+//		}
+//		
+//	}
+//	
+//	private void removeIconFromList(DragIconController mapIcon) {
+//		
+//		Iterator<DragIconController> it = mapIcons.iterator();
+//		boolean itemFound = false;
+//		
+//		while( it.hasNext() && !itemFound ) {
+//			
+//			DragIconController icon = it.next();
+//			
+//			if( icon.equals(mapIcon) ) {
+//				
+//				it.remove();
+//				itemFound = true;
+//				System.out.println("Item has been removed from the ListWrapper");
+//				
+//			} else {
+//				
+//				System.out.println("There was no item removed from the ListWrapper");
+//				
+//			}	
+//		}	
+//	}
 	
 }
 

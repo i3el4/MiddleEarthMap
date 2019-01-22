@@ -1,7 +1,6 @@
 package application.controller;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +15,28 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 
-public class DragIconController extends AnchorPane implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6741952577473661325L;
+/**
+ * Custom control class to create an map icon, that can be used for drag and drop events.
+ * 
+ * The icon type decides about the color, picture and according pane on which the icon can be 
+ * dropped. The type is set when the map controller pane is populated with the specific icons. 
+ * 
+ * Each icon gets a name and some additional information (e.g. "Rudolf", "Weapons: Sword, spear").
+ * The name and information can be edited when the icon is clicked. The information gets stored 
+ * in a observablelist.
+ * The tooltip gives information about the icon status, when it is in the map sidepane, and when
+ * the icon was dropped it displays the name of the icon on the map.
+ *  
+ * The coordinates of the icon are based on the location of the mouse cursor during the drop event.
+ * TODO: And are later used for saving and loading the icons at the right coordinates.
+ * They are used for opening the icon information edit dialog.
+ * 
+ * To make use of the DragContainer class data must be in a serializable format, therefore the
+ * information in the observable list needs to be converted to a normal list to make it 
+ * serializable.
+ * 
+ */
+public class DragIconController extends AnchorPane {
 
 	@FXML 
 	private transient AnchorPane icon_root_pane;
@@ -29,7 +44,7 @@ public class DragIconController extends AnchorPane implements Serializable{
 	private DragIconType mType = null;
 
 	private String name = null;	
-	private transient Tooltip tooltip;
+	private Tooltip tooltip;
 
 	private ObservableList<MapItemData> additionalData = FXCollections.observableArrayList();
 
