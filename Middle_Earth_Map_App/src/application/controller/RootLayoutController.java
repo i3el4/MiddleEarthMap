@@ -11,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -106,8 +105,7 @@ public class RootLayoutController extends AnchorPane{
 
 		// calls the class for zooming the image and sets the StackPane on zoom
 		ImageMagnifier iM = new ImageMagnifier();
-//		iM.setImageOnZoom(image_stack_pane);
-		iM.setZoomOnScroll(image_stack_pane, image_scroll_pane, scrollContent);
+		iM.setImageOnScroll(image_stack_pane, image_scroll_pane, scrollContent);
 		iM.setCursor(image_stack_pane);
 		// set the ScrollPane pannable
 		image_scroll_pane.setPannable(true);

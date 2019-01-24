@@ -68,6 +68,15 @@ public class MapItemEditDialogController {
 	public void setDialogStage(Stage dialogStage) {
 		this.dialogStage = dialogStage;
 	}
+	
+	/**
+	 * Get text of texfield back
+	 * 
+	 * @param dialogStage
+	 */
+	public String getName() {
+		return name_field.getText();
+	}
 
 	/**
 	 * Sets the map item to be edited in the dialog.
