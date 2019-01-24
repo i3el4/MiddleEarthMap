@@ -247,7 +247,7 @@ public class RootLayoutController extends AnchorPane{
 				// get a reference to the clicked DragIcon object
 				DragIconController icn = (DragIconController) event.getSource();
 
-//				// removes icon from list that is used for saving the data
+//				// TODO: for saving - removes icon from list that is used for saving the data
 //				if( icn.isDroppedOnMap() ) {
 //
 //					removeIconFromList(icn);
@@ -320,7 +320,6 @@ public class RootLayoutController extends AnchorPane{
 	 * Finally to remove the drag event handlers that were added in the DragDetected 
 	 * event a DragDone event handler is created.
 	 */
-
 	private void buildDragHandlers() {
 
 		//drag over transition to move widget form left pane to right pane
@@ -383,7 +382,31 @@ public class RootLayoutController extends AnchorPane{
 				event.setDropCompleted(true);
 			}
 		};
-
+		
+		/**
+		 * Setting up DragDone up as a delegator.  DragDone is used as a “clearinghouse” to vet
+		 * whatever drag-and-drop operations occur in our application, verifying first that they
+		 * are valid drag-and-drop operations, and second, that they completed successfully.
+		 * From there, the DragDone executes the appropriate code for that operation.
+		 *  
+		 *  Try to retrieve the AddNode drag data by calling Dragboard.content() and passing it
+		 *  the DataFormat object named AddNode, which is defined in the DragContainer class.
+		 *  
+		 *  If the DragContainer reference returns valid (i.e., the drag operation was an “AddNode”
+		 *  operation), then check to see if the “scene_coords” value exists in the container.  
+		 *  If it returns null, the user dropped the operation outside the limits of the right 
+		 *  pane, because the “scene_coords” data is defined only in the right pane’s DragDropped 
+		 *  event handler.
+		 *  
+		 *  Having validated a successful drag-and-drop operation to add a new node, the remaining
+		 *   does the following:
+		 *   - Create a new DragIcon to act as new node
+		 *   - Set the icon’s type using the “type” value assigned to the DragContainer in the 
+		 *     DragDetected event handler
+		 *   - Add the new DragIcon as a child of the right pane
+		 *   - Relocate the new DragIcon to center on the mouse cursor position
+		 */
+		
 		this.setOnDragDone (new EventHandler <DragEvent> (){
 
 			@Override
@@ -410,10 +433,12 @@ public class RootLayoutController extends AnchorPane{
 						// drag container and assigns it to the dropped icon
 						droppedIcon.setType(DragIconType.valueOf(
 								container.getValue("type")));
-						droppedIcon.setIconName(		container.getValue("name"));
+						droppedIcon.setIconName(		
+								container.getValue("name"));
 						droppedIcon.setDeserializedIconData(
 								container.getValue("data"));
-						droppedIcon.setIconDropStatus(	container.getValue("status"));
+						droppedIcon.setIconDropStatus(	
+								container.getValue("status"));
 
 
 						DragIconType mType = mDragOverIcon.getType();
@@ -439,7 +464,6 @@ public class RootLayoutController extends AnchorPane{
 
 							showMapItemEditDialog(droppedIcon);
 							droppedIcon.changeIconDropStatus();
-							System.out.println("test");
 //							// adds icon to list that is used for saving and loading the map
 //							// icons later
 //							addIconToList(droppedIcon);
