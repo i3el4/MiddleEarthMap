@@ -9,38 +9,61 @@ import org.junit.jupiter.api.Test;
 
 import javafx.util.Pair;
 
-class DragContainerTest {
+/**
+ * Junit Test of DragContainer.class
+ * 
+ * @author sonja läderach
+ *
+ */
+public class DragContainerTest {
 	
-	public DragContainer container;
-	public Object object1; 
-	public Object object2;
+	private DragContainer container;
+	private Object object1; 
+	private Object object2;
 	
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws Exception  {
 		container = new DragContainer();
 		object1 = new Object();
 		object2 = new Object();
+		new Object();
 	}
 
 	@Test
 	/**
-     * Test if the object gets added to the list.   
+     * Test if the object gets added to the list and returned correctly  
+     * @throws Exception 
      */
-	void testAddData() {
+	void testAddData() throws Exception  {
 		String key = new String("Tarzan");
 		container.addData(key, object1);
 		
 		assertEquals(object1, container.getValue("Tarzan"));
-		assertEquals(1, container.getNumberOfData());
+	}
+	
+	@Test
+	/**
+	 * Test if multiple objects get added to the list correctly
+	 * @throws Exception
+	 */
+	void testAddMultipleData() throws Exception {
+		String key1 = new String("Tarzan");
+		String key2 = new String("Jane");
+		
+		container.addData(key1, object1);
+		container.addData(key2, object2);
+		
+		assertEquals(2, container.getNumberOfData());
 	}
 	
 
 
 	@Test
 	/**
-     * Test if the object is initialized correctly.
+     * Test if the pairs get stored and returned correctly.
+     * @throws Exception
      */
-	void testGetData() {
+	void testGetData() throws Exception {
 		String key = new String("Tarzan");
 		container.addData(key, object1);
 		
@@ -50,6 +73,6 @@ class DragContainerTest {
 		
 		assertEquals(expectedList, container.getData());
 	}
-	
+
 
 }

@@ -108,8 +108,7 @@ public class RootLayoutController extends AnchorPane{
 
 		// calls the class for zooming the image and sets the StackPane on zoom
 		ImageMagnifier iM = new ImageMagnifier();
-//		iM.setImageOnZoom(image_stack_pane);
-		iM.setZoomOnScroll(image_stack_pane, image_scroll_pane, scrollContent);
+		iM.setImageOnScroll(image_stack_pane, image_scroll_pane, scrollContent);
 		iM.setCursor(image_stack_pane);
 		// set the ScrollPane pannable
 		image_scroll_pane.setPannable(true);
